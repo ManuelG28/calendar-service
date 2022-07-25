@@ -1,0 +1,42 @@
+---
+spring:
+  profiles:
+    default: prod
+server:
+  port: 8090
+  servlet:
+    context-path: "/api"
+  error:
+    include-message: always
+...
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      generate-ddl: true
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driverClassName: com.mysql.cj.jdbc.Driver
+name: dev-enviroment
+environment: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+name: prod-YAML
+environment: production
+enabled: false
+servers:
+  - www.abc.com
+  - www.xyz.com
