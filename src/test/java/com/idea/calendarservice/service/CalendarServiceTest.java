@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.idea.calendarservice.db.CalendarEntity;
 import com.idea.calendarservice.db.CalendarRepository;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,18 @@ class CalendarServiceTest {
     CalendarEntity createdCalendar = calendarService.createCalendar(CALENDAR);
 
     assertThat(createdCalendar).isEqualTo(CALENDAR_ENTITY);
+  }
+
+  @Test
+  void shouldBeAbleToGetAllCalendars() {
+    when(calendarRepository.findAll()).thenReturn(List.of(CALENDAR_ENTITY));
+    assertThat(calendarService.getAllCalendars()).hasSize(1);
+    assertThat(calendarService.getAllCalendars()).allSatisfy(calendar -> {
+      assertThat(calendar.getId()).isNotNull();
+      assertThat(calendar.getName()).isNotEmpty();
+      assertThat(calendar.getDescription()).isNotEmpty();
+      assertThat(calendar.getDescription()).isNotEmpty();
+    });
   }
 
 }
