@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CalendarServiceImpl implements CalendarService {
 
-  CalendarRepository calendarRepository;
+  private CalendarRepository calendarRepository;
 
   @Override
   public CalendarEntity createCalendar(Calendar calendar) {
@@ -24,8 +24,16 @@ public class CalendarServiceImpl implements CalendarService {
 
   @Override
   public List<Calendar> getAllCalendars() {
-    return StreamEx.of(Lists.newArrayList(calendarRepository.findAll()))
-        .map(CalendarEntity::toCalendarModel).toList();
+    return mapCalendarEntitiesToCalendars(calendarRepository.findAll());
   }
 
+  @Override
+  public List<Calendar> getCalendarsByDate(String date){
+    return mapCalendarEntitiesToCalendars(calendarRepository.findCalendarEntitiesByDate(date));
+  }
+
+  private List<Calendar> mapCalendarEntitiesToCalendars(Iterable<CalendarEntity> calendarEntities){
+    return StreamEx.of(Lists.newArrayList(calendarEntities))
+            .map(CalendarEntity::toCalendarModel).toList();
+  }
 }

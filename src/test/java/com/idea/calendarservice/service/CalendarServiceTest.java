@@ -25,7 +25,7 @@ class CalendarServiceTest {
   private CalendarRepository calendarRepository;
 
   @Test
-  void should_be_able_to_create_a_new_calendar(){
+  void should_be_able_to_create_a_new_calendar() {
     when(calendarRepository.save(any(CalendarEntity.class))).thenReturn(CALENDAR_ENTITY);
     CalendarEntity createdCalendar = calendarService.createCalendar(CALENDAR);
 
@@ -33,15 +33,29 @@ class CalendarServiceTest {
   }
 
   @Test
-  void shouldBeAbleToGetAllCalendars() {
+  void should_be_able_to_get_all_calendars() {
     when(calendarRepository.findAll()).thenReturn(List.of(CALENDAR_ENTITY));
-    assertThat(calendarService.getAllCalendars()).hasSize(1);
+
     assertThat(calendarService.getAllCalendars()).allSatisfy(calendar -> {
       assertThat(calendar.getId()).isNotNull();
       assertThat(calendar.getName()).isNotEmpty();
-      assertThat(calendar.getDescription()).isNotEmpty();
+      assertThat(calendar.getDate()).isNotEmpty();
       assertThat(calendar.getDescription()).isNotEmpty();
     });
+  }
+
+  @Test
+  void should_be_able_to_get_calendars_by_date() {
+    when(calendarRepository.findCalendarEntitiesByDate(any(String.class))).thenReturn(
+        List.of(CALENDAR_ENTITY));
+    
+    assertThat(calendarService.getCalendarsByDate(CALENDAR_ENTITY.getDate())).allSatisfy(
+        calendar -> {
+          assertThat(calendar.getId()).isNotNull();
+          assertThat(calendar.getName()).isNotEmpty();
+          assertThat(calendar.getDescription()).isNotEmpty();
+          assertThat(calendar.getDate()).isEqualTo(CALENDAR_ENTITY.getDate());
+        });
   }
 
 }

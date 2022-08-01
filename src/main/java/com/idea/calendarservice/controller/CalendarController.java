@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +25,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping(V_1 + CALENDARS)
 public class CalendarController {
 
-  CalendarService calendarService;
+  private CalendarService calendarService;
 
   @PostMapping()
-  public ResponseEntity<Void> addDate(@Valid @RequestBody Calendar calendar,
+  public ResponseEntity<Void> addCalendar(@Valid @RequestBody Calendar calendar,
       UriComponentsBuilder uriComponentsBuilder) {
     CalendarEntity createdCalendar = calendarService.createCalendar(calendar);
     URI uri = uriComponentsBuilder.path("/dates/{id}").buildAndExpand(createdCalendar.getId())
@@ -36,8 +37,13 @@ public class CalendarController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Calendar>> getAllDates() {
+  public ResponseEntity<List<Calendar>> getAllCalendars() {
     return ResponseEntity.ok(calendarService.getAllCalendars());
+  }
+
+  @GetMapping("/date/{date}")
+  public ResponseEntity<List<Calendar>> getCalendarByDate(@PathVariable String date) {
+    return ResponseEntity.ok(calendarService.getCalendarsByDate(date));
   }
 
 }

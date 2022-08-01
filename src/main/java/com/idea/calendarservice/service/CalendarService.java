@@ -9,4 +9,6 @@ public interface CalendarService {
   CalendarEntity createCalendar(Calendar calendar);
 
   List<Calendar> getAllCalendars();
+
+  List<Calendar> getCalendarsByDate(String date);
 }
