@@ -3,6 +3,7 @@ package com.idea.calendarservice.db;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.idea.calendarservice.model.Calendar;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,4 +56,14 @@ public class CalendarEntity {
   @Column
   @NotNull
   private String description;
+
+
+  public Calendar toCalendarModel() {
+    return Calendar.builder()
+        .id(this.id)
+        .description(this.description)
+        .name(this.name)
+        .date(this.date)
+        .build();
+  }
 }
