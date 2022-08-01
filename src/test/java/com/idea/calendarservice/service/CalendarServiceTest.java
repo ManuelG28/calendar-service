@@ -24,7 +24,7 @@ class CalendarServiceTest {
   private CalendarRepository calendarRepository;
 
   @Test
-  void shouldBeAbleToCreateANewCalendar(){
+  void should_be_able_to_create_a_new_calendar(){
     when(calendarRepository.save(any(CalendarEntity.class))).thenReturn(CALENDAR_ENTITY);
     CalendarEntity createdCalendar = calendarService.createCalendar(CALENDAR);
 

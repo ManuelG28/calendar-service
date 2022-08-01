@@ -35,7 +35,7 @@ class CalendarControllerTest {
   private CalendarService calendarService;
 
   @Test
-  void shouldBeAbleToCreateANewCalendar() throws Exception {
+  void should_be_able_to_create_a_new_calendar() throws Exception {
     given(calendarService.createCalendar(CALENDAR)).willReturn(CALENDAR_ENTITY);
     mockMvc.perform(
         post("/api/" + Endpoints.V_1 + Endpoints.CALENDARS)
@@ -46,7 +46,7 @@ class CalendarControllerTest {
   }
 
   @Test
-  void givenBadCalendarArgumentsShouldReturnBadRequest() throws Exception {
+  void given_bad_calendar_arguments_should_return_bad_request() throws Exception {
     mockMvc.perform(
             post("/api/" + Endpoints.V_1 + Endpoints.CALENDARS)
                 .content(objectMapper.writeValueAsString(CALENDAR_WITH_WRONG_ARGUMENTS))
