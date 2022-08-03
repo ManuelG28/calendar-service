@@ -9,8 +9,8 @@ steps:
     args: [ 'assemble' ]
 # Build with docker
   - name: gcr.io/cloud-builders/docker
-    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/calendar_service:$COMMIT_SHA', '--build-arg=JAR_FILE=build/libs/calendarService.jar', '.' ]
-images: [ 'gcr.io/$PROJECT_ID/calendar-service:$COMMIT_SHA' ]
+    args: [ 'build', '-t', 'gcr.io/idea-bot-323314/calendar_service:', '--build-arg=JAR_FILE=build/libs/calendarService.jar', '.' ]
+images: [ 'gcr.io/idea-bot-323314/calendar-service' ]
 # To store logs on Logging
 options:
   logging: CLOUD_LOGGING_ONLY
