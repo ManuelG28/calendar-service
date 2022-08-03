@@ -13,7 +13,7 @@ steps:
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'gcr.io/$PROJECT_ID/calendar-service:$COMMIT_SHA' ]
-images: [ 'gcr.io/$PROJECT_ID//calendar-service:$COMMIT_SHA' ]
+images: [ 'gcr.io/$PROJECT_ID/calendar-service:$COMMIT_SHA' ]
 # To store logs on Logging
 options:
   logging: CLOUD_LOGGING_ONLY
