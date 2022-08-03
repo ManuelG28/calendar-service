@@ -42,6 +42,12 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
+    testLogging {
+        // set options for log level LIFECYCLE
+        events "failed", "passed", "skipped"
+        exceptionFormat "short"
+        showStackTraces true
+    }
 }
