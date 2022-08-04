@@ -5,7 +5,6 @@ import static com.idea.calendarservice.utils.StringUtils.Formats.DATE_REGEX_FORM
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.idea.calendarservice.db.CalendarEntity;
 import com.idea.calendarservice.utils.StringUtils.ErrorResponses;
-import java.util.UUID;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import lombok.Builder;
@@ -18,7 +17,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class Calendar {
 
-  UUID id;
+  Long id;
   @Pattern(regexp = DATE_REGEX_FORMAT, message = ErrorResponses.DATE_MUST_MATCH_PATTERN)
   @NotEmpty
   String date;
