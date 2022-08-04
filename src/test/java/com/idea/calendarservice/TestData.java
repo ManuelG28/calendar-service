@@ -2,11 +2,11 @@ package com.idea.calendarservice;
 
 import com.idea.calendarservice.db.CalendarEntity;
 import com.idea.calendarservice.model.Calendar;
-import java.util.UUID;
+import java.util.Random;
 
 public class TestData {
 
-  public static final UUID ID = UUID.fromString("bbb3c2b0-68e2-444b-971c-532e09820b91");
+  public static final Long ID = new Random().nextLong();
 
   public static final Calendar CALENDAR = Calendar.builder()
       .date("12-12")

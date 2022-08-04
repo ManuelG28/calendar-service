@@ -9,8 +9,10 @@ server:
   error:
     include-message: always
 ...
----
 
+---
+name: dev-enviroment
+environment: dev
 spring:
   config:
     activate:
@@ -26,8 +28,6 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
-name: dev-enviroment
-environment: dev
 
 springdoc:
   api-docs:
@@ -39,12 +39,18 @@ springdoc:
     enabled: true
 
 ---
+name: prod-enviroment
+environment: production
 spring:
   config:
     activate:
       on-profile: prod
-name: prod-YAML
-environment: production
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+  cloud:
+    gcp:
+      sql:
+        instance-connection-name: ${CLOUD_SQL_CONNECTION_NAME}
 
 springdoc:
   api-docs:
@@ -54,8 +60,3 @@ springdoc:
     config-url: http://localhost:8080/api/v1/api-docs/swagger-config
     url: http://localhost:8080/api/v1/api-docs
     enabled: true
-
-enabled: false
-servers:
-  - www.abc.com
-  - www.xyz.com
