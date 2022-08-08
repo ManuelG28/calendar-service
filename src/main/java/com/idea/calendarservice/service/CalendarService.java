@@ -11,4 +11,8 @@ public interface CalendarService {
   List<Calendar> getAllCalendars();
 
   List<Calendar> getCalendarsByDate(String date);
+
+  CalendarEntity getCalendarById(Long id);
+
+  void deleteCalendarById(Long id);
 }

@@ -4,15 +4,20 @@ package com.idea.calendarservice.controller;
 import static com.idea.calendarservice.TestData.CALENDAR;
 import static com.idea.calendarservice.TestData.CALENDAR_ENTITY;
 import static com.idea.calendarservice.TestData.CALENDAR_WITH_WRONG_ARGUMENTS;
+import static com.idea.calendarservice.TestData.ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.idea.calendarservice.exception.CalendarEntityNotFoundException;
 import com.idea.calendarservice.model.Calendar;
 import com.idea.calendarservice.service.CalendarService;
 import java.util.List;
@@ -81,5 +86,22 @@ class CalendarControllerTest extends CalendarControllerBaseTest {
             get(baseUrl.concat("/date/" + CALENDAR.getDate())).contextPath("/api"))
         .andExpect(status().isOk())
         .andExpect(content().json(objectMapper.writeValueAsString(expectedCalendars)));
+  }
+
+  @Test
+  void should_be_able_to_delete_calendar_by_its_id() throws Exception{
+    given(calendarService.getCalendarById(ID)).willReturn(CALENDAR_ENTITY);
+    doNothing().when(calendarService).deleteCalendarById(ID);
+    mockMvc.perform(
+            delete(baseUrl.concat("/" +  ID)).contextPath("/api"))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void given_a_not_stored_id_should_return_not_found() throws Exception{
+    doThrow(CalendarEntityNotFoundException.class).when(calendarService).deleteCalendarById(ID);
+    mockMvc.perform(
+        delete(baseUrl.concat("/" +  ID)).contextPath("/api"))
+        .andExpect(status().isNotFound());
   }
 }

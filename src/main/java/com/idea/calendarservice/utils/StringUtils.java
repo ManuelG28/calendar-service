@@ -19,6 +19,14 @@ public class StringUtils {
     }
   }
 
+  public static class Exception {
+
+    public static final String ENTITY_NOT_FOUND_BY_ID = "%s entity not found by %s %s";
+
+    private Exception() {
+    }
+  }
+
   private StringUtils() {
   }
 }
