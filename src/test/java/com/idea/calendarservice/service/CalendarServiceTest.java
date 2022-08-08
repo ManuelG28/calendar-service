@@ -65,7 +65,7 @@ class CalendarServiceTest {
   }
 
   @Test
-  void should_be_able_to_get_calendar_by_id(){
+  void should_be_able_to_get_calendar_by_its_id(){
     when(calendarRepository.findById(ID)).thenReturn(Optional.of(CALENDAR_ENTITY));
     assertThat(calendarService.getCalendarById(ID)).isEqualTo(CALENDAR_ENTITY);
   }
