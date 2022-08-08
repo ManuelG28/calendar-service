@@ -2,13 +2,19 @@ package com.idea.calendarservice.service;
 
 import static com.idea.calendarservice.TestData.CALENDAR;
 import static com.idea.calendarservice.TestData.CALENDAR_ENTITY;
+import static com.idea.calendarservice.TestData.ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.idea.calendarservice.db.CalendarEntity;
 import com.idea.calendarservice.db.CalendarRepository;
+import com.idea.calendarservice.exception.CalendarEntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,6 +62,27 @@ class CalendarServiceTest {
           assertThat(calendar.getDescription()).isNotEmpty();
           assertThat(calendar.getDate()).isEqualTo(CALENDAR_ENTITY.getDate());
         });
+  }
+
+  @Test
+  void should_be_able_to_get_calendar_by_id(){
+    when(calendarRepository.findById(ID)).thenReturn(Optional.of(CALENDAR_ENTITY));
+    assertThat(calendarService.getCalendarById(ID)).isEqualTo(CALENDAR_ENTITY);
+  }
+
+  @Test
+  void given_a_not_stored_id_should_return_not_found(){
+    when(calendarRepository.findById(ID)).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> {
+      calendarService.deleteCalendarById(ID);
+    }).isInstanceOf(CalendarEntityNotFoundException.class);
+  }
+
+  @Test
+  void should_be_able_to_delete_calendar_by_its_id(){
+    when(calendarRepository.findById(ID)).thenReturn(Optional.of(CALENDAR_ENTITY));
+    calendarService.deleteCalendarById(ID);
+    verify(calendarRepository, times(1)).delete(CALENDAR_ENTITY);
   }
 
 }

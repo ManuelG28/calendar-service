@@ -3,6 +3,7 @@ package com.idea.calendarservice.service;
 import com.google.common.collect.Lists;
 import com.idea.calendarservice.db.CalendarEntity;
 import com.idea.calendarservice.db.CalendarRepository;
+import com.idea.calendarservice.exception.CalendarEntityNotFoundException;
 import com.idea.calendarservice.model.Calendar;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -28,12 +29,23 @@ public class CalendarServiceImpl implements CalendarService {
   }
 
   @Override
-  public List<Calendar> getCalendarsByDate(String date){
+  public List<Calendar> getCalendarsByDate(String date) {
     return mapCalendarEntitiesToCalendars(calendarRepository.findCalendarEntitiesByDate(date));
   }
 
-  private List<Calendar> mapCalendarEntitiesToCalendars(Iterable<CalendarEntity> calendarEntities){
+  @Override
+  public CalendarEntity getCalendarById(Long id){
+    return calendarRepository.findById(id)
+        .orElseThrow(() -> new CalendarEntityNotFoundException("id", id.toString()));
+  }
+
+  @Override
+  public void deleteCalendarById(Long id) {
+    calendarRepository.delete(getCalendarById(id));
+  }
+
+  private List<Calendar> mapCalendarEntitiesToCalendars(Iterable<CalendarEntity> calendarEntities) {
     return StreamEx.of(Lists.newArrayList(calendarEntities))
-            .map(CalendarEntity::toCalendarModel).toList();
+        .map(CalendarEntity::toCalendarModel).toList();
   }
 }
