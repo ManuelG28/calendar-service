@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CalendarServiceImpl implements CalendarService {
 
-  private CalendarRepository calendarRepository;
+  private final CalendarRepository calendarRepository;
 
   @Override
   public CalendarEntity createCalendar(Calendar calendar) {
-    return calendarRepository.save(calendar.toDateEntity());
+    return calendarRepository.save(calendar.toCalendarEntity());
   }
 
   @Override
@@ -34,9 +34,14 @@ public class CalendarServiceImpl implements CalendarService {
   }
 
   @Override
-  public CalendarEntity getCalendarById(Long id){
+  public CalendarEntity getCalendarById(Long id) {
     return calendarRepository.findById(id)
         .orElseThrow(() -> new CalendarEntityNotFoundException("id", id.toString()));
+  }
+
+  @Override
+  public void updateCalendar(Calendar calendar) {
+    calendarRepository.save(calendar.toCalendarEntity());
   }
 
   @Override

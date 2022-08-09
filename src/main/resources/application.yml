@@ -21,7 +21,7 @@ spring:
     database: MYSQL
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       generate-ddl: true
   datasource:
     url: ${SPRING_DATASOURCE_URL}

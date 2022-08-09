@@ -5,6 +5,7 @@ import static com.idea.calendarservice.TestData.CALENDAR;
 import static com.idea.calendarservice.TestData.CALENDAR_ENTITY;
 import static com.idea.calendarservice.TestData.CALENDAR_WITH_WRONG_ARGUMENTS;
 import static com.idea.calendarservice.TestData.ID;
+import static com.idea.calendarservice.TestData.UPDATED_CALENDAR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -13,6 +14,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +47,7 @@ class CalendarControllerTest extends CalendarControllerBaseTest {
   private CalendarService calendarService;
 
   @Test
-  void should_be_able_to_create_a_new_calendar() throws Exception {
+  void should_be_able_to_create_new_calendars() throws Exception {
     given(calendarService.createCalendar(CALENDAR)).willReturn(CALENDAR_ENTITY);
     mockMvc.perform(
         post(baseUrl)
@@ -56,7 +58,8 @@ class CalendarControllerTest extends CalendarControllerBaseTest {
   }
 
   @Test
-  void given_bad_calendar_arguments_should_return_bad_request() throws Exception {
+  void given_bad_calendar_arguments_when_post_calendars_should_return_bad_request()
+      throws Exception {
     mockMvc.perform(
             post(baseUrl)
                 .content(objectMapper.writeValueAsString(CALENDAR_WITH_WRONG_ARGUMENTS))
@@ -89,19 +92,43 @@ class CalendarControllerTest extends CalendarControllerBaseTest {
   }
 
   @Test
-  void should_be_able_to_delete_calendar_by_its_id() throws Exception{
+  void should_be_abe_to_update_calendars() throws Exception {
+    doNothing().when(calendarService).updateCalendar(UPDATED_CALENDAR);
+    mockMvc.perform(
+        put(baseUrl)
+            .content(objectMapper.writeValueAsString(UPDATED_CALENDAR))
+            .contextPath("/api")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+    ).andExpect(status().isNoContent());
+  }
+
+  @Test
+  void given_bad_calendar_arguments_when_put_calendars_should_return_bad_request()
+      throws Exception {
+    mockMvc.perform(
+            put(baseUrl)
+                .content(objectMapper.writeValueAsString(CALENDAR_WITH_WRONG_ARGUMENTS))
+                .contextPath("/api")
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(
+            MethodArgumentNotValidException.class));
+  }
+
+  @Test
+  void should_be_able_to_delete_calendar_by_its_id() throws Exception {
     given(calendarService.getCalendarById(ID)).willReturn(CALENDAR_ENTITY);
     doNothing().when(calendarService).deleteCalendarById(ID);
     mockMvc.perform(
-            delete(baseUrl.concat("/" +  ID)).contextPath("/api"))
+            delete(baseUrl.concat("/" + ID)).contextPath("/api"))
         .andExpect(status().isNoContent());
   }
 
   @Test
-  void given_a_not_stored_id_should_return_not_found() throws Exception{
+  void given_a_not_stored_id_should_return_not_found() throws Exception {
     doThrow(CalendarEntityNotFoundException.class).when(calendarService).deleteCalendarById(ID);
     mockMvc.perform(
-        delete(baseUrl.concat("/" +  ID)).contextPath("/api"))
+            delete(baseUrl.concat("/" + ID)).contextPath("/api"))
         .andExpect(status().isNotFound());
   }
 }

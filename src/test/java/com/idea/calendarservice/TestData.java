@@ -20,6 +20,16 @@ public class TestData {
       .name("Lorem ipsum dolor.")
       .build();
 
+  public static final Calendar UPDATED_CALENDAR = Calendar.builder()
+      .id(ID)
+      .date("24-12")
+      .description(
+          "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...")
+      .name("Lorem ipsum dolor sit amet.")
+      .build();
+
+  public static final CalendarEntity UPDATED_CALENDAR_ENTITY = UPDATED_CALENDAR.toCalendarEntity();
+
   public static final CalendarEntity CALENDAR_ENTITY = CalendarEntity.builder()
       .id(ID)
       .date("12-12")
