@@ -126,7 +126,7 @@ class CalendarControllerTest extends CalendarControllerBaseTest {
 
   @Test
   void given_a_not_stored_id_should_return_not_found() throws Exception {
-    doThrow(CalendarEntityNotFoundException.class).when(calendarService).deleteCalendarById(ID);
+    doThrow(new CalendarEntityNotFoundException("id", ID.toString())).when(calendarService).deleteCalendarById(ID);
     mockMvc.perform(
             delete(baseUrl.concat("/" + ID)).contextPath("/api"))
         .andExpect(status().isNotFound());
