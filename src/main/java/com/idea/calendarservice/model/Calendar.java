@@ -19,7 +19,7 @@ public class Calendar {
 
   Long id;
   @Pattern(regexp = DATE_REGEX_FORMAT, message = ErrorResponses.DATE_MUST_MATCH_PATTERN)
-  @NotEmpty( message = ErrorResponses.DESCRIPTION_MUST_NOT_BE_EMPTY)
+  @NotEmpty( message = ErrorResponses.DATE_MUST_NOT_BE_EMPTY)
   String date;
   @NotEmpty( message = ErrorResponses.NAME_MUST_NOT_BE_EMPTY)
   String name;
