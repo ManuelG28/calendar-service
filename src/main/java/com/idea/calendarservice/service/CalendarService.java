@@ -14,5 +14,7 @@ public interface CalendarService {
 
   CalendarEntity getCalendarById(Long id);
 
+  void updateCalendar(Calendar calendar);
+
   void deleteCalendarById(Long id);
 }

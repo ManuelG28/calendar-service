@@ -3,10 +3,11 @@ package com.idea.calendarservice.service;
 import static com.idea.calendarservice.TestData.CALENDAR;
 import static com.idea.calendarservice.TestData.CALENDAR_ENTITY;
 import static com.idea.calendarservice.TestData.ID;
+import static com.idea.calendarservice.TestData.UPDATED_CALENDAR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,7 +55,7 @@ class CalendarServiceTest {
   void should_be_able_to_get_calendars_by_date() {
     when(calendarRepository.findCalendarEntitiesByDate(any(String.class))).thenReturn(
         List.of(CALENDAR_ENTITY));
-    
+
     assertThat(calendarService.getCalendarsByDate(CALENDAR_ENTITY.getDate())).allSatisfy(
         calendar -> {
           assertThat(calendar.getId()).isNotNull();
@@ -65,13 +66,19 @@ class CalendarServiceTest {
   }
 
   @Test
-  void should_be_able_to_get_calendar_by_its_id(){
+  void should_be_able_to_get_calendar_by_its_id() {
     when(calendarRepository.findById(ID)).thenReturn(Optional.of(CALENDAR_ENTITY));
     assertThat(calendarService.getCalendarById(ID)).isEqualTo(CALENDAR_ENTITY);
   }
 
   @Test
-  void given_a_not_stored_id_should_return_not_found(){
+  void should_be_able_to_update_calendars(){
+    calendarService.updateCalendar(UPDATED_CALENDAR);
+    verify(calendarRepository, atLeastOnce()).save(any(CalendarEntity.class));
+  }
+
+  @Test
+  void given_a_not_stored_id_should_return_not_found() {
     when(calendarRepository.findById(ID)).thenReturn(Optional.empty());
     assertThatThrownBy(() -> {
       calendarService.deleteCalendarById(ID);
@@ -79,10 +86,10 @@ class CalendarServiceTest {
   }
 
   @Test
-  void should_be_able_to_delete_calendar_by_its_id(){
+  void should_be_able_to_delete_calendar_by_its_id() {
     when(calendarRepository.findById(ID)).thenReturn(Optional.of(CALENDAR_ENTITY));
     calendarService.deleteCalendarById(ID);
-    verify(calendarRepository, times(1)).delete(CALENDAR_ENTITY);
+    verify(calendarRepository, atLeastOnce()).delete(CALENDAR_ENTITY);
   }
 
 }

@@ -26,7 +26,7 @@ public class Calendar {
   @NotEmpty
   String description;
 
-  public CalendarEntity toDateEntity() {
+  public CalendarEntity toCalendarEntity() {
     return CalendarEntity.builder()
         .id(this.id)
         .date(this.date)
