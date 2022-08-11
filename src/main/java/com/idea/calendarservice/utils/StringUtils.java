@@ -13,7 +13,10 @@ public class StringUtils {
 
   public static class ErrorResponses {
 
-    public static final String DATE_MUST_MATCH_PATTERN = "Must match dd-MM format. e.g: 02-12";
+    public static final String DATE_MUST_MATCH_PATTERN = "Date must match dd-MM format. e.g: 02-12";
+    public static final String DATE_MUST_NOT_BE_EMPTY ="Date must not be empty";
+    public static final String NAME_MUST_NOT_BE_EMPTY ="Name must not be empty";
+    public static final String DESCRIPTION_MUST_NOT_BE_EMPTY ="Description must not be empty";
 
     private ErrorResponses() {
     }
