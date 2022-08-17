@@ -2,7 +2,11 @@ package com.idea.calendarservice;
 
 import com.idea.calendarservice.db.CalendarEntity;
 import com.idea.calendarservice.model.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import one.util.streamex.StreamEx;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class TestData {
 
@@ -37,4 +41,23 @@ public class TestData {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse facilisis accumsan nibh nec convallis. Morbi.")
       .name("Lorem ipsum dolor.")
       .build();
+
+  public static List<Calendar> generateCalendars() {
+    List<Calendar> calendars = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      calendars.add(Calendar.builder()
+          .id(new Random().nextLong())
+          .date("12-12")
+          .description(
+              RandomStringUtils.random(10))
+          .name(RandomStringUtils.random(5))
+          .build());
+    }
+    return calendars;
+  }
+
+  public static List<CalendarEntity> generateCalendarEntities() {
+    return StreamEx.of(generateCalendars()).map(Calendar::toCalendarEntity).toList();
+  }
+
 }

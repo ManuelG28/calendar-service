@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -43,19 +44,24 @@ public class CalendarController {
     return ResponseEntity.ok(calendarService.getAllCalendars());
   }
 
+  @GetMapping(params = {"page"})
+  public ResponseEntity<List<Calendar>> getCalendarsPaginated(@RequestParam("page") int page) {
+    return ResponseEntity.ok(calendarService.getCalendarsPaginated(page));
+  }
+
   @GetMapping("/date/{date}")
   public ResponseEntity<List<Calendar>> getCalendarByDate(@PathVariable String date) {
     return ResponseEntity.ok(calendarService.getCalendarsByDate(date));
   }
 
   @PutMapping
-  public ResponseEntity<Void> updateCalendar(@Valid @RequestBody Calendar calendar){
+  public ResponseEntity<Void> updateCalendar(@Valid @RequestBody Calendar calendar) {
     calendarService.updateCalendar(calendar);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteCalendarById(@PathVariable Long id){
+  public ResponseEntity<Void> deleteCalendarById(@PathVariable Long id) {
     calendarService.deleteCalendarById(id);
     return ResponseEntity.noContent().build();
   }

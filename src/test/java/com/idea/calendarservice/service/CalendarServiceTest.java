@@ -4,6 +4,7 @@ import static com.idea.calendarservice.TestData.CALENDAR;
 import static com.idea.calendarservice.TestData.CALENDAR_ENTITY;
 import static com.idea.calendarservice.TestData.ID;
 import static com.idea.calendarservice.TestData.UPDATED_CALENDAR;
+import static com.idea.calendarservice.TestData.generateCalendarEntities;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,6 +22,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class CalendarServiceTest {
@@ -52,6 +55,21 @@ class CalendarServiceTest {
   }
 
   @Test
+  void should_be_able_to_get_pageable_calendars() {
+    when(calendarRepository.findAll(PageRequest.of(0, 10))).thenReturn(
+        new PageImpl<>(generateCalendarEntities()));
+
+    assertThat(calendarService.getCalendarsPaginated(0))
+        .hasSize(10)
+        .allSatisfy(calendar -> {
+          assertThat(calendar.getId()).isNotNull();
+          assertThat(calendar.getName()).isNotEmpty();
+          assertThat(calendar.getDate()).isNotEmpty();
+          assertThat(calendar.getDescription()).isNotEmpty();
+        });
+  }
+
+  @Test
   void should_be_able_to_get_calendars_by_date() {
     when(calendarRepository.findCalendarEntitiesByDate(any(String.class))).thenReturn(
         List.of(CALENDAR_ENTITY));
@@ -72,7 +90,7 @@ class CalendarServiceTest {
   }
 
   @Test
-  void should_be_able_to_update_calendars(){
+  void should_be_able_to_update_calendars() {
     calendarService.updateCalendar(UPDATED_CALENDAR);
     verify(calendarRepository, atLeastOnce()).save(any(CalendarEntity.class));
   }
