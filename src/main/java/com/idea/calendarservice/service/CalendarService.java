@@ -12,6 +12,8 @@ public interface CalendarService {
 
   List<Calendar> getCalendarsByDate(String date);
 
+  List<Calendar> getCalendarsPaginated(int page);
+
   CalendarEntity getCalendarById(Long id);
 
   void updateCalendar(Calendar calendar);

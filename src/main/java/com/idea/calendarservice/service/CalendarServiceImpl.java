@@ -9,6 +9,8 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import one.util.streamex.StreamEx;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +33,12 @@ public class CalendarServiceImpl implements CalendarService {
   @Override
   public List<Calendar> getCalendarsByDate(String date) {
     return mapCalendarEntitiesToCalendars(calendarRepository.findCalendarEntitiesByDate(date));
+  }
+
+  @Override
+  public List<Calendar> getCalendarsPaginated(int page) {
+    Pageable pageWithTenElements = PageRequest.of(page, 10);
+    return mapCalendarEntitiesToCalendars(calendarRepository.findAll(pageWithTenElements));
   }
 
   @Override

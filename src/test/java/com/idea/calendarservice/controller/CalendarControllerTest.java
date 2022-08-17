@@ -6,6 +6,7 @@ import static com.idea.calendarservice.TestData.CALENDAR_ENTITY;
 import static com.idea.calendarservice.TestData.CALENDAR_WITH_WRONG_ARGUMENTS;
 import static com.idea.calendarservice.TestData.ID;
 import static com.idea.calendarservice.TestData.UPDATED_CALENDAR;
+import static com.idea.calendarservice.TestData.generateCalendars;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -79,6 +80,29 @@ class CalendarControllerTest extends CalendarControllerBaseTest {
                 .contextPath("/api"))
         .andExpect(status().isOk())
         .andExpect(content().json(objectMapper.writeValueAsString(expectedCalendars)));
+  }
+
+  @Test
+  void should_be_able_to_get_calendars_paginated() throws Exception{
+    List<Calendar> calendarsAtFirstPage = generateCalendars();
+    List<Calendar> calendarsAtSecondPage = generateCalendars();
+
+    given(calendarService.getCalendarsPaginated(0)).willReturn(calendarsAtFirstPage);
+    given(calendarService.getCalendarsPaginated(1)).willReturn(calendarsAtSecondPage);
+
+    mockMvc.perform(
+            get(baseUrl)
+                .contextPath("/api")
+                .param("page", "0"))
+        .andExpect(status().isOk())
+        .andExpect(content().json(objectMapper.writeValueAsString(calendarsAtFirstPage)));
+
+    mockMvc.perform(
+            get(baseUrl)
+                .contextPath("/api")
+                .param("page", "1"))
+        .andExpect(status().isOk())
+        .andExpect(content().json(objectMapper.writeValueAsString(calendarsAtSecondPage)));
   }
 
   @Test
