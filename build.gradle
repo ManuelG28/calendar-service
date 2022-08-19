@@ -34,7 +34,6 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-
     //Database
     implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.4.3' //Remote database connection
     runtimeOnly 'mysql:mysql-connector-java'
