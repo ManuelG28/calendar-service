@@ -37,14 +37,18 @@ public class CalendarServiceImpl implements CalendarService {
 
   @Override
   public List<Calendar> getCalendarsPaginated(int page) {
-    Pageable pageWithTenElements = PageRequest.of(page, 10);
-    return mapCalendarEntitiesToCalendars(calendarRepository.findAll(pageWithTenElements));
+    return mapCalendarEntitiesToCalendars(calendarRepository.findAll(PageRequest.of(page, 10)));
   }
 
   @Override
   public CalendarEntity getCalendarById(Long id) {
     return calendarRepository.findById(id)
         .orElseThrow(() -> new CalendarEntityNotFoundException("id", id.toString()));
+  }
+
+  @Override
+  public Long getNumberOfCalendars() {
+    return calendarRepository.count();
   }
 
   @Override

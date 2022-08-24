@@ -110,4 +110,10 @@ class CalendarServiceTest {
     verify(calendarRepository, atLeastOnce()).delete(CALENDAR_ENTITY);
   }
 
+  @Test
+  void should_be_able_to_get_total_of_calendars(){
+    when(calendarRepository.count()).thenReturn(20L);
+    assertThat(calendarService.getNumberOfCalendars()).isEqualTo(20L);
+  }
+
 }

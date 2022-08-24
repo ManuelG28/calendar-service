@@ -100,4 +100,11 @@ public class CalendarController {
     calendarService.deleteCalendarById(id);
     return ResponseEntity.noContent().build();
   }
+
+  @Operation(summary = "Get the total number of calendars")
+  @ApiResponse(responseCode = "200", description = "Number of calendar retrieve successfully")
+  @GetMapping("/total")
+  public ResponseEntity<Long> getTotalCalendars() {
+    return ResponseEntity.ok(calendarService.getNumberOfCalendars());
+  }
 }
