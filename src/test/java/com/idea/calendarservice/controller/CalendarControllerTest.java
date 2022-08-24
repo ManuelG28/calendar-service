@@ -12,6 +12,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -154,5 +155,15 @@ class CalendarControllerTest extends CalendarControllerBaseTest {
     mockMvc.perform(
             delete(baseUrl.concat("/" + ID)).contextPath("/api"))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void should_be_able_to_get_total_of_calendars() throws Exception{
+    when(calendarService.getNumberOfCalendars()).thenReturn(20L);
+    mockMvc.perform(
+            get(baseUrl.concat("/total"))
+                .contextPath("/api"))
+        .andExpect(status().isOk())
+        .andExpect(content().json("20"));
   }
 }
